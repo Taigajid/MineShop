@@ -1,11 +1,11 @@
 name: MineShop
-version: 1.2.0
+version: 2.0.0
 main: io.github.Taigajid.MineShop.MineShop
 api-version: 1.21.4
 commands:
   shop:
     description: Der beste Shop der Welt
-    usage: /shop
+    usage: /shop <category> <item>
     permission: MineShop.shop.use
     permission-message: Du bist ein Hurensohn!
 permissions:

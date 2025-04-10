@@ -6,12 +6,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.HashMap;
 
 public class CommandShop implements CommandExecutor {
 
     private final Map<String, Map<String, ShopItem>> shopItems;
+    private ShopGui shopGui;
+
 
     public CommandShop() {
         shopItems = new HashMap<>();
@@ -29,40 +34,70 @@ public class CommandShop implements CommandExecutor {
         shopItems.put("diamond", diamondItems);
     }
 
+    public CommandShop(ShopGui shopGui, Map<String, Map<String, ShopItem>> shopItems) {
+        this.shopGui = shopGui;
+        this.shopItems = shopItems;
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @Nullable Command command, @NotNull String label, String[] args) {
 
-        String category = args[0].toLowerCase();
-        String itemKey = args[1].toLowerCase();
+        Player player = (Player) sender;
 
-        Map<String, ShopItem> validItems = shopItems.get(category);
-
-        ShopItem shopItem = validItems.get(itemKey);
-
-
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
-            if (shopItems.containsKey(category)) {
-
-                if (validItems.containsKey(itemKey)) {
-                    ItemStack purchasedItem = new ItemStack(shopItem.getMaterial(), shopItem.getAmount());
-
-                    player.getInventory().addItem(purchasedItem);
-                } else {
-                    sender.sendMessage("Invalid Item!");
-                }
-
-            } else {
-                sender.sendMessage("Invalid Category!");
-            }
+        if(args.length == 0) {
+            shopGui.openInventory(player);
+            return true;
 
         }
+        if (args.length == 2) {
+            String category = args[0].toLowerCase();
+            String itemKey = args[1].toLowerCase();
 
-        return true;
+            Map<String, ShopItem> validCategory = shopItems.get(category);
+
+            ShopItem validItems = validCategory.get(itemKey);
+
+            if (!shopItems.containsKey(category)) {
+                sender.sendMessage("Invalid Category!");
+                return true;
+            }
+
+            if (!validCategory.containsKey(itemKey)) {
+                sender.sendMessage("Invalid Item!");
+                return true;
+            }
+
+            ItemStack purchasedItem = new ItemStack(validItems.getMaterial(), validItems.getAmount());
+
+            switch (category) {
+                case "diamond":
+                    if (player.getInventory().contains(Material.DIAMOND_BLOCK, 1)) {
+                        player.getInventory().remove(new ItemStack(Material.DIAMOND_BLOCK, 1));
+                        player.getInventory().addItem(purchasedItem);
+                    } else {
+                        sender.sendMessage("Du hast keinen Diamantblock!");
+                        return true;
+                    }
+                    break;
+
+                case "netherite":
+                    if (player.getInventory().contains(Material.NETHERITE_INGOT, 1)) {
+                        player.getInventory().remove(new ItemStack(Material.NETHERITE_INGOT, 1));
+                        player.getInventory().addItem(purchasedItem);
+                    } else {
+                        sender.sendMessage("Du hast keinen Netherite Ingot!");
+                        return true;
+                    }
+                    break;
+            }
+
+            return true;
+        }
+        return false;
     }
 
     public Map<String, Map<String, ShopItem>> getShopItems() {
         return this.shopItems;
     }
+
 }
