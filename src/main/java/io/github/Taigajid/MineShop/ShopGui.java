@@ -27,8 +27,8 @@ public class ShopGui implements Listener {
     public void initializeItems() {
         inv.setItem(10, createGuiItem(Material.ELYTRA, "Elytra", "§aPrice: 1 Netherite Ingot","§bYou can use this item to fly through the air!"));
         inv.setItem(11, createGuiItem(Material.MACE, "Mace", "§aPrice: 1 Netherite Ingot", "§bYou can use this item to fight monsters!"));
-        inv.setItem(14, createGuiItem(Material.OAK_LOG, "Oak Log", "§aPrice: 1 Diamond Block", "§bYou can use this item to build!"));
-        inv.setItem(15, createGuiItem(Material.SPRUCE_LOG, "Spruce Log", "§aPrice: 1 Diamond Block", "§bYou can use this item to build!"));
+        inv.setItem(15, createGuiItem(Material.OAK_LOG, "Oak Log", "§aPrice: 1 Diamond Block", "§bYou can use this item to build!"));
+        inv.setItem(16, createGuiItem(Material.SPRUCE_LOG, "Spruce Log", "§aPrice: 1 Diamond Block", "§bYou can use this item to build!"));
     }
 
     protected ItemStack createGuiItem(final Material material, final String name, final String... lore) {

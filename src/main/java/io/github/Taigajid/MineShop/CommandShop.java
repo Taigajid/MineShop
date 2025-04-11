@@ -72,7 +72,7 @@ public class CommandShop implements CommandExecutor {
             switch (category) {
                 case "diamond":
                     if (player.getInventory().contains(Material.DIAMOND_BLOCK, 1)) {
-                        player.getInventory().remove(new ItemStack(Material.DIAMOND_BLOCK, 1));
+                        player.getInventory().removeItem(new ItemStack(Material.DIAMOND_BLOCK, 1));
                         player.getInventory().addItem(purchasedItem);
                     } else {
                         sender.sendMessage("Du hast keinen Diamantblock!");
@@ -82,7 +82,7 @@ public class CommandShop implements CommandExecutor {
 
                 case "netherite":
                     if (player.getInventory().contains(Material.NETHERITE_INGOT, 1)) {
-                        player.getInventory().remove(new ItemStack(Material.NETHERITE_INGOT, 1));
+                        player.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT, 1));
                         player.getInventory().addItem(purchasedItem);
                     } else {
                         sender.sendMessage("Du hast keinen Netherite Ingot!");
